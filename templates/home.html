@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Ecommerce | Welcome</title>
+	<style>
+		:root {
+			--bg: #0f172a;
+			--card: #111827;
+			--accent: #22d3ee;
+			--text: #e5e7eb;
+			--muted: #9ca3af;
+		}
+		* { box-sizing: border-box; }
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: "Segoe UI", system-ui, sans-serif;
+			background: radial-gradient(circle at 20% 20%, #1e293b, #0b1020 55%),
+									radial-gradient(circle at 80% 0%, #0ea5e9, transparent 35%),
+									var(--bg);
+			color: var(--text);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 32px;
+		}
+		.shell {
+			width: min(1100px, 100%);
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+			gap: 24px;
+			align-items: start;
+		}
+		.hero {
+			background: var(--card);
+			border: 1px solid #1f2937;
+			border-radius: 16px;
+			padding: 28px;
+			box-shadow: 0 20px 70px rgba(0,0,0,0.45);
+		}
+		h1 { margin: 0 0 8px; font-size: 28px; }
+		p { margin: 0 0 18px; color: var(--muted); }
+		form {
+			background: #0b1222;
+			border: 1px solid #1f2937;
+			border-radius: 14px;
+			padding: 20px;
+			box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+		}
+		label { display: block; margin: 12px 0 6px; color: var(--text); }
+		input {
+			width: 100%;
+			padding: 10px 12px;
+			border-radius: 10px;
+			border: 1px solid #1f2937;
+			background: #0f172a;
+			color: var(--text);
+		}
+		button {
+			margin-top: 16px;
+			width: 100%;
+			padding: 12px;
+			border: none;
+			border-radius: 10px;
+			background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+			color: #0b1222;
+			font-weight: 700;
+			cursor: pointer;
+			transition: transform 120ms ease, box-shadow 120ms ease;
+		}
+		button:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(14,165,233,0.35); }
+		.muted-link { color: var(--muted); font-size: 14px; text-align: center; display: block; margin-top: 8px; }
+		.card-title { font-weight: 700; margin: 0 0 4px; }
+	</style>
+</head>
+<body>
+	<div class="shell">
+		<div class="hero">
+			<h1>Welcome to Ecommerce</h1>
+			<p>Sign in to continue or create a new account.</p>
+			<p style="font-size:14px; color:var(--muted);"></p>
+		</div>
+
+		<div>
+			<form method="post" novalidate>
+				{% csrf_token %}
+				<div class="card-title">Sign in</div>
+				{{ login_form.non_field_errors }}
+				{% for field in login_form.visible_fields %}
+					<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+					{{ field }}
+					{% if field.errors %}<div style="color:#fca5a5; font-size:12px;">{{ field.errors|striptags }}</div>{% endif %}
+				{% endfor %}
+				<button type="submit" name="login">Sign in</button>
+			</form>
+			<span class="muted-link"></span>
+		</div>
+
+		<div>
+			<form method="post" novalidate>
+				{% csrf_token %}
+				<div class="card-title">Create account</div>
+				{{ signup_form.non_field_errors }}
+				{% for field in signup_form.visible_fields %}
+					<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+					{{ field }}
+					{% if field.help_text %}<div style="color:var(--muted); font-size:12px;">{{ field.help_text }}</div>{% endif %}
+					{% if field.errors %}<div style="color:#fca5a5; font-size:12px;">{{ field.errors|striptags }}</div>{% endif %}
+				{% endfor %}
+				<button type="submit" name="signup">Sign up</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
